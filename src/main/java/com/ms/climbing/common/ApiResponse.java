@@ -1,4 +1,4 @@
-package com.ms.climbing.dto;
+package com.ms.climbing.common;
 
 import com.ms.climbing.exception.ErrorCode;
 import lombok.Builder;
