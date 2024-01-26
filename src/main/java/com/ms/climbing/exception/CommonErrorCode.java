@@ -10,6 +10,8 @@ public enum CommonErrorCode implements ErrorCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error"),
     INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "유효하지 않는 파라미터가 포함되어 있습니다."),
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
+    EXPIRED_TOKEN(HttpStatus.BAD_REQUEST, "토큰의 유효기간이 만료되었습니다."),
+    INVALD_TOKEN(HttpStatus.BAD_REQUEST, "유효하지 않은 토큰입니다."),
     ;
 
     private final HttpStatus httpStatus;
