@@ -20,11 +20,11 @@ public class User extends Base {
 
     @Id
     private String userId;
-    @Column
+    @Column(nullable = false)
     private String password;
-    @Column
+    @Column(nullable = false)
     private String name;
-    @Column
+    @Column(nullable = false)
     private String nickName;
     @Column
     private String instagram;
