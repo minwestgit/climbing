@@ -1,8 +1,6 @@
 package com.ms.climbing.climb.service;
 
-import com.ms.climbing.climb.dto.CreateClimbRequest;
-import com.ms.climbing.climb.dto.GetBoulderingResponse;
-import com.ms.climbing.climb.dto.GetClimbResponse;
+import com.ms.climbing.climb.dto.*;
 import com.ms.climbing.climb.entity.Bouldering;
 import com.ms.climbing.climb.entity.Climb;
 import com.ms.climbing.climb.exception.ClimbErrorCode;
@@ -38,5 +36,11 @@ public class ClimbService {
                 .map(GetBoulderingResponse::of)
                 .toList();
         return GetClimbResponse.of(climb, boulderingList);
+    }
+
+    public void delete(Long id) {
+        Climb climb = climbRepository.findById(id)
+                .orElseThrow(() -> new ClimbException(ClimbErrorCode.CLIMB_NOT_FOUND));
+        climbRepository.delete(climb);
     }
 }

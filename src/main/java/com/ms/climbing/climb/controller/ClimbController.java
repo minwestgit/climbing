@@ -7,10 +7,7 @@ import com.ms.climbing.common.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,8 +23,15 @@ public class ClimbController {
     }
 
     @Operation(summary = "클라이밍 기록 조회")
-    @PostMapping(value = "/climbs/{id}")
+    @GetMapping(value = "/climbs/{id}")
     public ApiResponse<GetClimbResponse> get(@PathVariable Long id) {
         return ApiResponse.success(climbService.get(id));
+    }
+
+    @Operation(summary = "클라이밍 기록 삭제")
+    @DeleteMapping(value = "/climbs/{id}")
+    public ApiResponse<Void> delete(@PathVariable Long id) {
+        climbService.delete(id);
+        return ApiResponse.success();
     }
 }
