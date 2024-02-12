@@ -1,8 +1,12 @@
 package com.ms.climbing.climb.service;
 
 import com.ms.climbing.climb.dto.CreateClimbRequest;
+import com.ms.climbing.climb.dto.GetBoulderingResponse;
+import com.ms.climbing.climb.dto.GetClimbResponse;
 import com.ms.climbing.climb.entity.Bouldering;
 import com.ms.climbing.climb.entity.Climb;
+import com.ms.climbing.climb.exception.ClimbErrorCode;
+import com.ms.climbing.climb.exception.ClimbException;
 import com.ms.climbing.climb.repository.ClimbRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,9 +25,18 @@ public class ClimbService {
         Climb climb = Climb.createClimb(request);
         List<Bouldering> boulderingList = request.getBoulderingList()
                 .stream()
-                .map(v -> Bouldering.createBouldering(v, climb))
+                .map(bouldering -> Bouldering.createBouldering(bouldering, climb))
                 .toList();
         climb.setBoulderingList(boulderingList);
         climbRepository.save(climb);
+    }
+
+    public GetClimbResponse get(Long id) {
+        Climb climb = climbRepository.findById(id)
+                .orElseThrow(() -> new ClimbException(ClimbErrorCode.CLIMB_NOT_FOUND));
+        List<GetBoulderingResponse> boulderingList = climb.getBoulderingList().stream()
+                .map(GetBoulderingResponse::of)
+                .toList();
+        return GetClimbResponse.of(climb, boulderingList);
     }
 }
