@@ -1,8 +1,10 @@
 package com.ms.climbing.climb.entity;
 
+import com.ms.climbing.climb.dto.CreateClimbRequest;
 import com.ms.climbing.common.Base;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,4 +26,24 @@ public class Climb extends Base {
     private String place;
     @OneToMany(mappedBy = "climb", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Bouldering> boulderingList = new ArrayList<>();
+
+    @Builder
+    private Climb(String description, String date, String place, List<Bouldering> boulderingList) {
+        this.description = description;
+        this.date = date;
+        this.place = place;
+        this.boulderingList = boulderingList;
+    }
+
+    public static Climb createClimb(CreateClimbRequest request) {
+        return Climb.builder()
+                .description(request.getDescription())
+                .date(request.getDate())
+                .place(request.getPlace())
+                .build();
+    }
+
+    public void setBoulderingList(List<Bouldering> boulderingList) {
+        this.boulderingList.addAll(boulderingList);
+    }
 }
