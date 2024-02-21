@@ -2,6 +2,7 @@ package com.ms.climbing.climb.controller;
 
 import com.ms.climbing.climb.dto.CreateClimbRequest;
 import com.ms.climbing.climb.dto.GetClimbResponse;
+import com.ms.climbing.climb.dto.UpdateClimbRequest;
 import com.ms.climbing.climb.service.ClimbService;
 import com.ms.climbing.common.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,6 +27,13 @@ public class ClimbController {
     @GetMapping(value = "/climbs/{id}")
     public ApiResponse<GetClimbResponse> get(@PathVariable Long id) {
         return ApiResponse.success(climbService.get(id));
+    }
+
+    @Operation(summary = "클라이밍 기록 수정")
+    @PatchMapping(value = "/climbs/{id}")
+    public ApiResponse<Void> update(@PathVariable Long id, @RequestBody @Valid UpdateClimbRequest request) {
+        climbService.update(request);
+        return ApiResponse.success();
     }
 
     @Operation(summary = "클라이밍 기록 삭제")

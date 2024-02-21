@@ -1,6 +1,7 @@
 package com.ms.climbing.climb.entity;
 
 import com.ms.climbing.climb.dto.CreateClimbRequest;
+import com.ms.climbing.climb.dto.UpdateClimbRequest;
 import com.ms.climbing.common.Base;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -45,5 +46,19 @@ public class Climb extends Base {
 
     public void setBoulderingList(List<Bouldering> boulderingList) {
         this.boulderingList.addAll(boulderingList);
+    }
+
+    public void removeBoulderingById(List<Long> boulderingIds) {
+        this.boulderingList.removeIf(bouldering -> boulderingIds.contains(bouldering.getId()));
+    }
+
+    public void update(UpdateClimbRequest request) {
+        this.description = description;
+        this.date = date;
+        this.place = place;
+    }
+
+    public void addBoulderingList(Bouldering newBouldering) {
+        this.boulderingList.add(newBouldering);
     }
 }

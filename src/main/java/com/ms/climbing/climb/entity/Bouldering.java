@@ -37,4 +37,8 @@ public class Bouldering extends Base {
                 .climb(climb)
                 .build();
     }
+
+    public void updateNum(int num) {
+        this.num = num;
+    }
 }

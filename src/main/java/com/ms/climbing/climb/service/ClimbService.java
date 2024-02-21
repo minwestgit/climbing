@@ -38,6 +38,35 @@ public class ClimbService {
         return GetClimbResponse.of(climb, boulderingList);
     }
 
+    public void update(UpdateClimbRequest request) {
+        Climb climb = climbRepository.findById(request.getId())
+                .orElseThrow(() -> new ClimbException(ClimbErrorCode.CLIMB_NOT_FOUND));
+
+        List<Long> deleteBoulderingIds = request.getDeleteBoulderingIds();
+        if(deleteBoulderingIds != null) {
+            climb.removeBoulderingById(deleteBoulderingIds);
+        }
+
+        List<Bouldering> existsBoulderingList = climb.getBoulderingList();
+        for (CreateBoulderingRequest updateBouldering : request.getUpdateBoulderingList()) {
+            boolean existingBouldering = existsBoulderingList.stream()
+                    .anyMatch(bouldering -> bouldering.getLevel() == updateBouldering.getLevel());
+            if (existingBouldering) {
+                for (Bouldering bouldering : existsBoulderingList) {
+                    if (bouldering.getLevel() == updateBouldering.getLevel()) {
+                        bouldering.updateNum(updateBouldering.getNum());
+                        break;
+                    }
+                }
+            } else {
+                Bouldering newBouldering = Bouldering.createBouldering(updateBouldering, climb);
+                climb.addBoulderingList(newBouldering);
+            }
+        }
+
+        climb.update(request);
+    }
+
     public void delete(Long id) {
         Climb climb = climbRepository.findById(id)
                 .orElseThrow(() -> new ClimbException(ClimbErrorCode.CLIMB_NOT_FOUND));
